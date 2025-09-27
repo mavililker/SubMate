@@ -1,0 +1,10 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 1.6.3
+_src_path: gh:algorandfoundation/algokit-python-template
+author_email: ilkermavili5369@hotmail.com
+author_name: İlker Mavili
+contract_name: submate
+deployment_language: python
+preset_name: starter
+project_name: submate-contracts
+
