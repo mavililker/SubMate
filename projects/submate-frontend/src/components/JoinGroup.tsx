@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSnackbar } from "notistack";
 import { getAlgodConfigFromViteEnvironment, getAppId, getIndexerConfigFromViteEnvironment } from "../utils/network/getAlgoClientConfigs";
-import { AlgorandClient } from "@algorandfoundation/algokit-utils";
+import { algo, AlgorandClient } from "@algorandfoundation/algokit-utils";
 import { useWallet } from "@txnlab/use-wallet-react";
 import { SubmateClient } from "../contracts/Submate";
 
@@ -68,7 +68,7 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
           fee: 6,
           max_members: 5,
           members: ["alice", "bob"],
-          creator: "admin"
+          creator: activeAddress ?? ''
         },
         {
           group_name: "Movie Buffs Society",
@@ -76,7 +76,7 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
           fee: 4,
           max_members: 6,
           members: ["carol"],
-          creator: "moderator"
+          creator: activeAddress ?? ''
         },
         {
           group_name: "TV Show Addicts",
@@ -84,7 +84,7 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
           fee: 5,
           max_members: 4,
           members: [],
-          creator: "admin"
+          creator: activeAddress ?? ''
         }
       ];
       const prompt = `
@@ -137,9 +137,21 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
     }
   };
 
-  const handleJoinGroup = (group: GroupSuggestion) => {
-    enqueueSnackbar(`Joined ${group.group_name}!`, { variant: "success" });
-    closeModal();
+  const handleJoinGroup = async (group: GroupSuggestion) => {
+    try {
+      const result = await algorand.send.payment({
+        signer: transactionSigner,
+        sender: activeAddress ?? '',
+        receiver: group.creator,
+        amount: algo(1),
+      })
+      enqueueSnackbar(`Joined ${group.group_name}!`, { variant: "success" });
+      enqueueSnackbar(`Transaction sent: ${result.txIds[0]}`, { variant: 'success' })
+      closeModal();
+    } catch (e) {
+      enqueueSnackbar('Failed to send transaction', { variant: 'error' })
+      console.log(e);
+    }
   };
 
   return (
