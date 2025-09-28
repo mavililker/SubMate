@@ -38,17 +38,17 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
   algorand.setDefaultSigner(transactionSigner)
   const indexer = algorand.client.indexer;
 
-
-
-
-
-
-
   const submateClient = new SubmateClient({
     appId: appId,
     algorand,
     defaultSender: activeAddress ?? undefined,
   });
+
+
+  /// Devamı gelmeli.
+
+
+
 
 
   const handleGetRecommendation = async () => {
@@ -57,14 +57,32 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
       const txns = await indexer.searchForTransactions().applicationID(getAppId().appId).do();
       console.log(txns);
       // Mevcut grupları al
-      const existingGroups = [{
-        group_name: "Tech Enthusiasts",
-        subscription: "Monthly",
-        fee: 5,
-        max_members: 50,
-        members: ["ADDR1", "ADDR2"],
-        creator: "CREATOR_ADDR1"
-      },]
+      const existingGroups: GroupSuggestion[] = [
+        {
+          group_name: "Netflix Fans United",
+          subscription: "Netflix",
+          fee: 6,
+          max_members: 5,
+          members: ["alice", "bob"],
+          creator: "admin"
+        },
+        {
+          group_name: "Movie Buffs Society",
+          subscription: "Netflix",
+          fee: 4,
+          max_members: 6,
+          members: ["carol"],
+          creator: "moderator"
+        },
+        {
+          group_name: "TV Show Addicts",
+          subscription: "Netflix",
+          fee: 5,
+          max_members: 4,
+          members: [],
+          creator: "admin"
+        }
+      ];
       const prompt = `
       The user has provided a subscription preference: "${subscriptionPref}".
       Here are the existing groups (in JSON format): ${JSON.stringify(existingGroups)}
@@ -106,7 +124,7 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
       console.log(Array.isArray(aiResponse)); // true ise array, false ise tek obje
       setSuggestions(aiResponse);
       console.log(suggestions)
-      enqueueSnackbar("Öneriler alındı!", { variant: "success" });
+      enqueueSnackbar("Suggestions received!", { variant: "success" });
     } catch (err: any) {
       enqueueSnackbar(`Error: ${err.message}`, { variant: "error" });
     } finally {
@@ -125,11 +143,11 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
       {suggestions.length === 0 && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-4 w-80 max-w-sm relative">
-            <h2 className="text-xl font-bold mb-2 text-center w-full">Bilgiler</h2>
+            <h2 className="text-xl font-bold mb-2 text-center w-full">Information</h2>
 
             <input
               type="text"
-              placeholder="Abonelik Tercihi"
+              placeholder="Subscription Preference"
               value={subscriptionPref}
               onChange={(e) => setSubscriptionPref(e.target.value)}
               className="p-2 border rounded"
@@ -139,7 +157,7 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
               onClick={handleGetRecommendation}
               disabled={loading}
             >
-              {loading ? "Öneri Alıyor..." : "Öneri Al"}
+              {loading ? "Fetching Suggestions..." : "Get Suggestions"}
             </button>
             <button
               type="button"
@@ -169,18 +187,17 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
             {suggestions.map((group) => (
               <div key={group.group_name} className="bg-white rounded-xl shadow p-4 flex flex-col gap-4 mb-4">
                 <h3 className="text-lg font-bold ">{group.group_name}</h3>
-                <p>Abonelik: {group.subscription}</p>
-                <p>Ücret: {group.fee} Algo</p>
-                <p>Üyeler: {group.members.join(", ")} / Max: {group.max_members}</p>
-                <p>Oluşturan: {group.creator}</p>
+                <p>Subscription: {group.subscription}</p>
+                <p>Fee: {group.fee} Algo</p>
+                <p>Members: {group.members.join(", ")} / Max: {group.max_members}</p>
+                <p>Creator: {group.creator}</p>
                 <div className="flex gap-2 mt-2">
                   <button
                     className="bg-green-600 text-white rounded px-4 py-2 flex-1"
                     onClick={() => handleJoinGroup(group)}
                   >
-                    Katıl
+                    Join
                   </button>
-
                 </div>
               </div>
             ))}
