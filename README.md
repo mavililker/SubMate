@@ -12,6 +12,7 @@ Smart Contract Language: Python, Contract Name: Submate
 
 Frontend: React, tailwind
 
+HOW IT WORKS
 
 Create Group – Users can create a subscription group (name, fee, members).
 
