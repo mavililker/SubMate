@@ -113,7 +113,7 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
       ]
       `;
 
-      const response = await fetch(`http://localhost:3000/getresponse?prompt=${encodeURIComponent(prompt)}`, {
+      const response = await fetch(`https://587204199ffa.ngrok-free.app/getresponse?prompt=${encodeURIComponent(prompt)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
