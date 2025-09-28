@@ -33,15 +33,15 @@ app.get('/getresponse', async (req, res) => {
     messages: [
       { role: "user", content: prompt }
     ],
-    max_tokens: 150
+    max_tokens: 1000
 });
     const raw = completion.choices[0].message.content.trim();
 
     let parsed;
     try {
-      parsed = JSON.parse(raw); // AI JSON array gönderiyorsa parse et
+      parsed = JSON.parse(raw);
     } catch {
-      parsed = raw; // fallback olarak string
+      parsed = raw;
     }
 
     res.json(parsed);
