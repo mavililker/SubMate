@@ -1,5 +1,10 @@
 # submate-frontend
 
+Backend: Node.js
+AI: openai gpt 3.5
+Smart Contract Language: Python
+Frontend: React, tailwind
+
 This starter React project has been generated using AlgoKit. See below for default getting started instructions.
 
 # Setup
