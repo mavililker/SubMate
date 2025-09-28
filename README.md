@@ -17,7 +17,6 @@ Pay & Record – Members pay on Algorand, contract secures it.
 
 Confirm & Share – Group confirmed, access details shared.
 
-This starter full stack project has been generated using AlgoKit. See below for default getting started instructions.
 
 ## Setup
 
