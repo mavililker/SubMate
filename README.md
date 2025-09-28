@@ -1,18 +1,6 @@
 # submate
 
-Deployed app with id: 746539458
-https://testnet.explorer.perawallet.app/application/746539458/
-
-Backend: Node.js
-
-AI: openai gpt 3.5
-
-Smart Contract Language: Python, Contract Name: Submate
-
-Frontend: React, tailwind
-
----------
-
+The AI-powered platform that helps people securely share and manage subscriptions using Algorand blockchain.
 
 HOW IT WORKS
 
@@ -23,3 +11,17 @@ Join Group – AI suggests optimal groups according to user preferences.
 Pay & Record – Members pay on Algorand, contract secures it.
 
 Confirm & Share – Group confirmed, access details shared. (This is not finished.)
+
+-------------
+
+
+Deployed app with id: 746539458
+https://testnet.explorer.perawallet.app/application/746539458/
+
+Backend: Node.js
+
+AI: openai gpt 3.5
+
+Smart Contract Language: Python, Contract Name: Submate
+
+Frontend: React, tailwind
