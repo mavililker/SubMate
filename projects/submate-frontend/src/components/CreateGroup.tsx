@@ -79,6 +79,7 @@ const CreateGroup = ({ openModal, closeModal }: CreateGroupInterface) => {
           ×
         </button>
         <h3 className="font-bold text-2xl mb-6">Create Group</h3>
+        <label className="mb-1 font-semibold w-full text-left">Group Name</label>
         <input
           type="text"
           placeholder="Group Name"
@@ -88,6 +89,7 @@ const CreateGroup = ({ openModal, closeModal }: CreateGroupInterface) => {
           required
         />
 
+        <label className="mb-1 font-semibold w-full text-left">Subscription</label>
         <input
           type="text"
           placeholder="Subscription"
@@ -97,8 +99,9 @@ const CreateGroup = ({ openModal, closeModal }: CreateGroupInterface) => {
           required
         />
 
+        <label className="mb-1 font-semibold w-full text-left">Per User Fee</label>
         <input
-          type="text"
+          type="number"
           placeholder="Per User Fee"
           value={perUserFee}
           onChange={(e) => setPerUserFee(Number(e.target.value))}
@@ -106,8 +109,9 @@ const CreateGroup = ({ openModal, closeModal }: CreateGroupInterface) => {
           required
         />
 
+        <label className="mb-1 font-semibold w-full text-left">Max Members</label>
         <input
-          type="text"
+          type="number"
           placeholder="Max Members"
           value={maxMembers}
           onChange={(e) => setMaxMembers(Number(e.target.value))}

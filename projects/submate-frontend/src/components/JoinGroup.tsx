@@ -52,6 +52,10 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
 
 
   const handleGetRecommendation = async () => {
+    if (!subscriptionPref.trim()) {
+      enqueueSnackbar("Please enter a subscription preference", { variant: "warning" });
+      return;
+    }
     setLoading(true);
     try {
       const txns = await indexer.searchForTransactions().applicationID(getAppId().appId).do();
@@ -89,7 +93,7 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
 
       Only choose from the existing groups that the user can join.
       Do not create new or imaginary groups.
-      Return only a valid JSON array — starting with "[" and ending with "]".
+      IMPORTANT ! Return only a valid JSON array — starting with "[" and ending with "]".
       Use only the following keys for each group object:
       "group_name", "subscription", "fee", "max_members", "members", "creator".
 
@@ -144,12 +148,14 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
           <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-4 w-80 max-w-sm relative">
             <h2 className="text-xl font-bold mb-2 text-center w-full">Information</h2>
 
+            <label className="mb-1 font-semibold w-full text-left">Subscription Preference</label>
             <input
               type="text"
               placeholder="Subscription Preference"
               value={subscriptionPref}
               onChange={(e) => setSubscriptionPref(e.target.value)}
-              className="p-2 border rounded"
+              className="p-2 border rounded w-full"
+              required
             />
             <button
               className={`bg-blue-600 text-white rounded px-4 py-2 mt-2 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
