@@ -148,7 +148,6 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
           <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-4 w-80 max-w-sm relative">
             <h2 className="text-xl font-bold mb-2 text-center w-full">Information</h2>
 
-            <label className="mb-1 font-semibold w-full text-left">Subscription Preference</label>
             <input
               type="text"
               placeholder="Subscription Preference"
