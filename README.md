@@ -3,7 +3,6 @@
 Deployed app with id: 746539458
 https://testnet.explorer.perawallet.app/application/746539458/
 
-
 Backend: Node.js
 
 AI: openai gpt 3.5
@@ -11,6 +10,9 @@ AI: openai gpt 3.5
 Smart Contract Language: Python, Contract Name: Submate
 
 Frontend: React, tailwind
+
+---------
+
 
 HOW IT WORKS
 
