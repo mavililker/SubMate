@@ -48,7 +48,7 @@ const Home: React.FC<HomeProps> = () => {
                 onClick={toggleCreateModal}
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold shadow-lg hover:from-purple-600 hover:to-indigo-700 transition-colors duration-300"
               >
-                Create Group
+                Create Subscription Group
               </button>
 
               <button
@@ -56,7 +56,7 @@ const Home: React.FC<HomeProps> = () => {
                 onClick={toggleJoinModal}
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-600 text-white font-semibold shadow-lg hover:from-pink-600 hover:to-rose-700 transition-colors duration-300"
               >
-                Join Group
+                Join Subscription Group
               </button>
             </>
           )}

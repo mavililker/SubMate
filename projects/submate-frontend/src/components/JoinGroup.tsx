@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useSnackbar } from "notistack";
+import { getAlgodConfigFromViteEnvironment, getAppId, getIndexerConfigFromViteEnvironment } from "../utils/network/getAlgoClientConfigs";
+import { AlgorandClient } from "@algorandfoundation/algokit-utils";
+import { useWallet } from "@txnlab/use-wallet-react";
+import { SubmateClient } from "../contracts/Submate";
 
 interface GroupSuggestion {
   group_name: string;
@@ -21,31 +25,69 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  const { transactionSigner, activeAddress } = useWallet()
+  const algodConfig = getAlgodConfigFromViteEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
+  const algorand = AlgorandClient.fromConfig({
+    algodConfig,
+    indexerConfig,
+  })
+
+  const appId = getAppId().appId;
+
+  algorand.setDefaultSigner(transactionSigner)
+  const indexer = algorand.client.indexer;
+
+
+
+
+
+
+
+  const submateClient = new SubmateClient({
+    appId: appId,
+    algorand,
+    defaultSender: activeAddress ?? undefined,
+  });
+
+
   const handleGetRecommendation = async () => {
     setLoading(true);
     try {
-      // Mevcut grupları örnek olarak AI'ye veriyoruz
-      const existingGroups: GroupSuggestion[] = [
-        { group_name: "Netflix Lovers", subscription: "Netflix", fee: 5, max_members: 3, members: ["alice"], creator: "alice" },
-        { group_name: "Disney Fans", subscription: "Disney+", fee: 7, max_members: 4, members: ["bob", "carol"], creator: "bob" }
-      ];
-
+      const txns = await indexer.searchForTransactions().applicationID(getAppId().appId).do();
+      console.log(txns);
+      // Mevcut grupları al
+      const existingGroups = [{
+        group_name: "Tech Enthusiasts",
+        subscription: "Monthly",
+        fee: 5,
+        max_members: 50,
+        members: ["ADDR1", "ADDR2"],
+        creator: "CREATOR_ADDR1"
+      },]
       const prompt = `
-        Kullanıcı bir abonelik tercihi verdi: "${subscriptionPref}".
-        Mevcut gruplar: ${JSON.stringify(existingGroups)}
-        Bu kullanıcı için 3-5 uygun grup önerisi üret.
-        Her öneri şu yapıda olmalı:
+      The user has provided a subscription preference: "${subscriptionPref}".
+      Here are the existing groups (in JSON format): ${JSON.stringify(existingGroups)}
+
+      Only choose from the existing groups that the user can join.
+      Do not create new or imaginary groups.
+      Return only a valid JSON array — starting with "[" and ending with "]".
+      Use only the following keys for each group object:
+      "group_name", "subscription", "fee", "max_members", "members", "creator".
+
+      ⚠️ Do not include any extra quotes, explanations, or formatting.
+      Only return the pure JSON array like this:
+      [
         {
-          group_name: string,
-          subscription: string,
-          fee: number,
-          max_members: number,
-          members: string[],
-          creator: string
-        }
-        Kullanıcı için yalnızca mevcut gruplardan uygun olanları seç.
-        Yeni veya uydurma grup oluşturma.
-        JSON array olarak döndür, sadece group_name, subscription, fee, max_members, members, creator alanlarını kullan.
+          "group_name": "...",
+          "subscription": "...",
+          "fee": ...,
+          "max_members": ...,
+          "members": [...],
+          "creator": "..."
+        },
+        ...
+      ]
       `;
 
       const response = await fetch(`http://localhost:3000/getresponse?prompt=${encodeURIComponent(prompt)}`, {

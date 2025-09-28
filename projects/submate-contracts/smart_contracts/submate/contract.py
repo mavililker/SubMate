@@ -5,10 +5,6 @@ from algopy.arc4 import abimethod
 
 class Submate(ARC4Contract):
 
-    def __init__(self) -> None:
-        super().__init__()
-        self.groups: String = String("")
-
     @abimethod()
     def hello(self, name: String) -> String:
         return "Hello, " + name
@@ -28,10 +24,6 @@ class Submate(ARC4Contract):
         assert max_members > 0, "max_members must be greater than 0"
         assert max_members <= 4, "max_members must be less than or equal to 100"
         
-        if self.groups == "":
-            self.groups = group_name
-        else:
-            self.groups = self.groups + "," + group_name
         
         self.group_name = group_name
         self.subscription = subscription
