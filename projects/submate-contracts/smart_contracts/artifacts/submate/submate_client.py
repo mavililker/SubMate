@@ -19,7 +19,7 @@ from algosdk.v2client.models import SimulateTraceConfig
 import algokit_utils
 from algokit_utils import AlgorandClient as _AlgoKitAlgorandClient
 
-_APP_SPEC_JSON = r"""{"arcs": [22, 28], "bareActions": {"call": [], "create": ["NoOp"]}, "methods": [{"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "string", "name": "name"}], "name": "hello", "returns": {"type": "string"}, "events": [], "readonly": false, "recommendations": {}}], "name": "Submate", "state": {"keys": {"box": {}, "global": {}, "local": {}}, "maps": {"box": {}, "global": {}, "local": {}}, "schema": {"global": {"bytes": 0, "ints": 0}, "local": {"bytes": 0, "ints": 0}}}, "structs": {}, "byteCode": {"approval": "CjEbQQA0gAQCvs4RNhoAjgEAA4EAQzEZFEQxGEQ2GgFXAgCIACBJFRZXBgJMUIAEFR98dUxQsIEBQzEZQP/UMRgURIEBQ4oBAYAHSGVsbG8sIIv/UIk=", "clear": "CoEBQw=="}, "events": [], "networks": {}, "source": {"approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuYXBwcm92YWxfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjUKICAgIC8vIGNsYXNzIFN1Ym1hdGUoQVJDNENvbnRyYWN0KToKICAgIHR4biBOdW1BcHBBcmdzCiAgICBieiBtYWluX2JhcmVfcm91dGluZ0A2CiAgICBwdXNoYnl0ZXMgMHgwMmJlY2UxMSAvLyBtZXRob2QgImhlbGxvKHN0cmluZylzdHJpbmciCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAwCiAgICBtYXRjaCBtYWluX2hlbGxvX3JvdXRlQDMKCm1haW5fYWZ0ZXJfaWZfZWxzZUAxMDoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjUKICAgIC8vIGNsYXNzIFN1Ym1hdGUoQVJDNENvbnRyYWN0KToKICAgIHB1c2hpbnQgMCAvLyAwCiAgICByZXR1cm4KCm1haW5faGVsbG9fcm91dGVAMzoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjYKICAgIC8vIEBhYmltZXRob2QoKQogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTo1CiAgICAvLyBjbGFzcyBTdWJtYXRlKEFSQzRDb250cmFjdCk6CiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICBleHRyYWN0IDIgMAogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6NgogICAgLy8gQGFiaW1ldGhvZCgpCiAgICBjYWxsc3ViIGhlbGxvCiAgICBkdXAKICAgIGxlbgogICAgaXRvYgogICAgZXh0cmFjdCA2IDIKICAgIHN3YXAKICAgIGNvbmNhdAogICAgcHVzaGJ5dGVzIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBwdXNoaW50IDEgLy8gMQogICAgcmV0dXJuCgptYWluX2JhcmVfcm91dGluZ0A2OgogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgU3VibWF0ZShBUkM0Q29udHJhY3QpOgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgYm56IG1haW5fYWZ0ZXJfaWZfZWxzZUAxMAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgICEKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gY3JlYXRpbmcKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4KCgovLyBzbWFydF9jb250cmFjdHMuc3VibWF0ZS5jb250cmFjdC5TdWJtYXRlLmhlbGxvKG5hbWU6IGJ5dGVzKSAtPiBieXRlczoKaGVsbG86CiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTo2LTcKICAgIC8vIEBhYmltZXRob2QoKQogICAgLy8gZGVmIGhlbGxvKHNlbGYsIG5hbWU6IFN0cmluZykgLT4gU3RyaW5nOgogICAgcHJvdG8gMSAxCiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTo4CiAgICAvLyByZXR1cm4gIkhlbGxvLCAiICsgbmFtZQogICAgcHVzaGJ5dGVzICJIZWxsbywgIgogICAgZnJhbWVfZGlnIC0xCiAgICBjb25jYXQKICAgIHJldHN1Ygo=", "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuY2xlYXJfc3RhdGVfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4K"}, "sourceInfo": {"approval": {"pcOffsetMethod": "none", "sourceInfo": [{"pc": [25], "errorMessage": "OnCompletion is not NoOp"}, {"pc": [66], "errorMessage": "can only call when creating"}, {"pc": [28], "errorMessage": "can only call when not creating"}]}, "clear": {"pcOffsetMethod": "none", "sourceInfo": []}}, "templateVariables": {}}"""
+_APP_SPEC_JSON = r"""{"arcs": [22, 28], "bareActions": {"call": [], "create": ["NoOp"]}, "methods": [{"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "string", "name": "name"}], "name": "hello", "returns": {"type": "string"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "string", "name": "group_name"}, {"type": "string", "name": "subscription"}, {"type": "uint64", "name": "per_user_fee"}, {"type": "uint64", "name": "max_members"}, {"type": "string", "name": "creator"}], "name": "create_group", "returns": {"type": "void"}, "events": [], "readonly": false, "recommendations": {}}], "name": "Submate", "state": {"keys": {"box": {}, "global": {"groups": {"key": "Z3JvdXBz", "keyType": "AVMString", "valueType": "AVMString"}, "group_name": {"key": "Z3JvdXBfbmFtZQ==", "keyType": "AVMString", "valueType": "AVMString"}, "subscription": {"key": "c3Vic2NyaXB0aW9u", "keyType": "AVMString", "valueType": "AVMString"}, "creator": {"key": "Y3JlYXRvcg==", "keyType": "AVMString", "valueType": "AVMString"}, "members": {"key": "bWVtYmVycw==", "keyType": "AVMString", "valueType": "AVMString"}, "pending_members": {"key": "cGVuZGluZ19tZW1iZXJz", "keyType": "AVMString", "valueType": "AVMString"}, "per_user_fee": {"key": "cGVyX3VzZXJfZmVl", "keyType": "AVMString", "valueType": "AVMUint64"}, "max_members": {"key": "bWF4X21lbWJlcnM=", "keyType": "AVMString", "valueType": "AVMUint64"}}, "local": {}}, "maps": {"box": {}, "global": {}, "local": {}}, "schema": {"global": {"bytes": 6, "ints": 2}, "local": {"bytes": 0, "ints": 0}}}, "structs": {}, "byteCode": {"approval": "CiACAAEmAgZncm91cHMAMRhAAAMoKWcxG0EAYIICBAK+zhEE5KVRUDYaAI4CACgAAiJDMRkURDEYRDYaAVcCADYaAlcCADYaAxc2GgQXNhoFVwIAiABAI0MxGRREMRhENhoBVwIAiAAeSRUWVwYCTFCABBUffHVMULAjQzEZQP+wMRgURCNDigEBgAdIZWxsbywgi/9QiYoFAIv7KRNEi/wpE0SL/USL/kSL/oEEDkQiKGVEKRJBAHEoi/tngApncm91cF9uYW1li/tngAxzdWJzY3JpcHRpb26L/GeAB2NyZWF0b3KL/2eAB21lbWJlcnOL/2eAD3BlbmRpbmdfbWVtYmVycylngAxwZXJfdXNlcl9mZWWL/WeAC21heF9tZW1iZXJzi/5niSIoZUSAASxQi/tQKExnQv+C", "clear": "CoEBQw=="}, "events": [], "networks": {}, "source": {"approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBzbWFydF9jb250cmFjdHMuc3VibWF0ZS5jb250cmFjdC5TdWJtYXRlLl9fYWxnb3B5X2VudHJ5cG9pbnRfd2l0aF9pbml0KCkgLT4gdWludDY0OgptYWluOgogICAgaW50Y2Jsb2NrIDAgMQogICAgYnl0ZWNibG9jayAiZ3JvdXBzIiAiIgogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGJueiBtYWluX2FmdGVyX2lmX2Vsc2VAMgogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MTAKICAgIC8vIHNlbGYuZ3JvdXBzOiBTdHJpbmcgPSBTdHJpbmcoIiIpCiAgICBieXRlY18wIC8vICJncm91cHMiCiAgICBieXRlY18xIC8vICIiCiAgICBhcHBfZ2xvYmFsX3B1dAoKbWFpbl9hZnRlcl9pZl9lbHNlQDI6CiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTo2CiAgICAvLyBjbGFzcyBTdWJtYXRlKEFSQzRDb250cmFjdCk6CiAgICB0eG4gTnVtQXBwQXJncwogICAgYnogbWFpbl9iYXJlX3JvdXRpbmdANwogICAgcHVzaGJ5dGVzcyAweDAyYmVjZTExIDB4ZTRhNTUxNTAgLy8gbWV0aG9kICJoZWxsbyhzdHJpbmcpc3RyaW5nIiwgbWV0aG9kICJjcmVhdGVfZ3JvdXAoc3RyaW5nLHN0cmluZyx1aW50NjQsdWludDY0LHN0cmluZyl2b2lkIgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMAogICAgbWF0Y2ggbWFpbl9oZWxsb19yb3V0ZUA1IG1haW5fY3JlYXRlX2dyb3VwX3JvdXRlQDYKCm1haW5fYWZ0ZXJfaWZfZWxzZUA5OgogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6NgogICAgLy8gY2xhc3MgU3VibWF0ZShBUkM0Q29udHJhY3QpOgogICAgaW50Y18wIC8vIDAKICAgIHJldHVybgoKbWFpbl9jcmVhdGVfZ3JvdXBfcm91dGVANjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjE2CiAgICAvLyBAYWJpbWV0aG9kKCkKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6NgogICAgLy8gY2xhc3MgU3VibWF0ZShBUkM0Q29udHJhY3QpOgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgZXh0cmFjdCAyIDAKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGV4dHJhY3QgMiAwCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAzCiAgICBidG9pCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyA0CiAgICBidG9pCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyA1CiAgICBleHRyYWN0IDIgMAogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MTYKICAgIC8vIEBhYmltZXRob2QoKQogICAgY2FsbHN1YiBjcmVhdGVfZ3JvdXAKICAgIGludGNfMSAvLyAxCiAgICByZXR1cm4KCm1haW5faGVsbG9fcm91dGVANToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjEyCiAgICAvLyBAYWJpbWV0aG9kKCkKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6NgogICAgLy8gY2xhc3MgU3VibWF0ZShBUkM0Q29udHJhY3QpOgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgZXh0cmFjdCAyIDAKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjEyCiAgICAvLyBAYWJpbWV0aG9kKCkKICAgIGNhbGxzdWIgaGVsbG8KICAgIGR1cAogICAgbGVuCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICBwdXNoYnl0ZXMgMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMSAvLyAxCiAgICByZXR1cm4KCm1haW5fYmFyZV9yb3V0aW5nQDc6CiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTo2CiAgICAvLyBjbGFzcyBTdWJtYXRlKEFSQzRDb250cmFjdCk6CiAgICB0eG4gT25Db21wbGV0aW9uCiAgICBibnogbWFpbl9hZnRlcl9pZl9lbHNlQDkKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICAhCiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIGNyZWF0aW5nCiAgICBpbnRjXzEgLy8gMQogICAgcmV0dXJuCgoKLy8gc21hcnRfY29udHJhY3RzLnN1Ym1hdGUuY29udHJhY3QuU3VibWF0ZS5oZWxsbyhuYW1lOiBieXRlcykgLT4gYnl0ZXM6CmhlbGxvOgogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MTItMTMKICAgIC8vIEBhYmltZXRob2QoKQogICAgLy8gZGVmIGhlbGxvKHNlbGYsIG5hbWU6IFN0cmluZykgLT4gU3RyaW5nOgogICAgcHJvdG8gMSAxCiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weToxNAogICAgLy8gcmV0dXJuICJIZWxsbywgIiArIG5hbWUKICAgIHB1c2hieXRlcyAiSGVsbG8sICIKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMuc3VibWF0ZS5jb250cmFjdC5TdWJtYXRlLmNyZWF0ZV9ncm91cChncm91cF9uYW1lOiBieXRlcywgc3Vic2NyaXB0aW9uOiBieXRlcywgcGVyX3VzZXJfZmVlOiB1aW50NjQsIG1heF9tZW1iZXJzOiB1aW50NjQsIGNyZWF0b3I6IGJ5dGVzKSAtPiB2b2lkOgpjcmVhdGVfZ3JvdXA6CiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weToxNi0yNAogICAgLy8gQGFiaW1ldGhvZCgpCiAgICAvLyBkZWYgY3JlYXRlX2dyb3VwKAogICAgLy8gICAgIHNlbGYsCiAgICAvLyAgICAgZ3JvdXBfbmFtZTogU3RyaW5nLAogICAgLy8gICAgIHN1YnNjcmlwdGlvbjogU3RyaW5nLAogICAgLy8gICAgIHBlcl91c2VyX2ZlZTogVUludDY0LAogICAgLy8gICAgIG1heF9tZW1iZXJzOiBVSW50NjQsCiAgICAvLyAgICAgY3JlYXRvcjogU3RyaW5nLAogICAgLy8gKSAtPiBOb25lOgogICAgcHJvdG8gNSAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weToyNQogICAgLy8gYXNzZXJ0IGdyb3VwX25hbWUgIT0gIiIsICJncm91cF9uYW1lIG11c3Qgbm90IGJlIGVtcHR5IgogICAgZnJhbWVfZGlnIC01CiAgICBieXRlY18xIC8vICIiCiAgICAhPQogICAgYXNzZXJ0IC8vIGdyb3VwX25hbWUgbXVzdCBub3QgYmUgZW1wdHkKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjI2CiAgICAvLyBhc3NlcnQgc3Vic2NyaXB0aW9uICE9ICIiLCAic3Vic2NyaXB0aW9uIG11c3Qgbm90IGJlIGVtcHR5IgogICAgZnJhbWVfZGlnIC00CiAgICBieXRlY18xIC8vICIiCiAgICAhPQogICAgYXNzZXJ0IC8vIHN1YnNjcmlwdGlvbiBtdXN0IG5vdCBiZSBlbXB0eQogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MjcKICAgIC8vIGFzc2VydCBwZXJfdXNlcl9mZWUgPiAwLCAicGVyX3VzZXJfZmVlIG11c3QgYmUgZ3JlYXRlciB0aGFuIDAiCiAgICBmcmFtZV9kaWcgLTMKICAgIGFzc2VydCAvLyBwZXJfdXNlcl9mZWUgbXVzdCBiZSBncmVhdGVyIHRoYW4gMAogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MjgKICAgIC8vIGFzc2VydCBtYXhfbWVtYmVycyA+IDAsICJtYXhfbWVtYmVycyBtdXN0IGJlIGdyZWF0ZXIgdGhhbiAwIgogICAgZnJhbWVfZGlnIC0yCiAgICBhc3NlcnQgLy8gbWF4X21lbWJlcnMgbXVzdCBiZSBncmVhdGVyIHRoYW4gMAogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MjkKICAgIC8vIGFzc2VydCBtYXhfbWVtYmVycyA8PSA0LCAibWF4X21lbWJlcnMgbXVzdCBiZSBsZXNzIHRoYW4gb3IgZXF1YWwgdG8gMTAwIgogICAgZnJhbWVfZGlnIC0yCiAgICBwdXNoaW50IDQgLy8gNAogICAgPD0KICAgIGFzc2VydCAvLyBtYXhfbWVtYmVycyBtdXN0IGJlIGxlc3MgdGhhbiBvciBlcXVhbCB0byAxMDAKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjMxCiAgICAvLyBpZiBzZWxmLmdyb3VwcyA9PSAiIjoKICAgIGludGNfMCAvLyAwCiAgICBieXRlY18wIC8vICJncm91cHMiCiAgICBhcHBfZ2xvYmFsX2dldF9leAogICAgYXNzZXJ0IC8vIGNoZWNrIHNlbGYuZ3JvdXBzIGV4aXN0cwogICAgYnl0ZWNfMSAvLyAiIgogICAgPT0KICAgIGJ6IGNyZWF0ZV9ncm91cF9lbHNlX2JvZHlAMgogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MzIKICAgIC8vIHNlbGYuZ3JvdXBzID0gZ3JvdXBfbmFtZQogICAgYnl0ZWNfMCAvLyAiZ3JvdXBzIgogICAgZnJhbWVfZGlnIC01CiAgICBhcHBfZ2xvYmFsX3B1dAoKY3JlYXRlX2dyb3VwX2FmdGVyX2lmX2Vsc2VAMzoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjM2CiAgICAvLyBzZWxmLmdyb3VwX25hbWUgPSBncm91cF9uYW1lCiAgICBwdXNoYnl0ZXMgImdyb3VwX25hbWUiCiAgICBmcmFtZV9kaWcgLTUKICAgIGFwcF9nbG9iYWxfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTozNwogICAgLy8gc2VsZi5zdWJzY3JpcHRpb24gPSBzdWJzY3JpcHRpb24KICAgIHB1c2hieXRlcyAic3Vic2NyaXB0aW9uIgogICAgZnJhbWVfZGlnIC00CiAgICBhcHBfZ2xvYmFsX3B1dAogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MzgKICAgIC8vIHNlbGYuY3JlYXRvciA9IGNyZWF0b3IKICAgIHB1c2hieXRlcyAiY3JlYXRvciIKICAgIGZyYW1lX2RpZyAtMQogICAgYXBwX2dsb2JhbF9wdXQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9zdWJtYXRlL2NvbnRyYWN0LnB5OjM5CiAgICAvLyBzZWxmLm1lbWJlcnMgPSBjcmVhdG9yCiAgICBwdXNoYnl0ZXMgIm1lbWJlcnMiCiAgICBmcmFtZV9kaWcgLTEKICAgIGFwcF9nbG9iYWxfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTo0MAogICAgLy8gc2VsZi5wZW5kaW5nX21lbWJlcnMgPSBTdHJpbmcoIiIpCiAgICBwdXNoYnl0ZXMgInBlbmRpbmdfbWVtYmVycyIKICAgIGJ5dGVjXzEgLy8gIiIKICAgIGFwcF9nbG9iYWxfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvc3VibWF0ZS9jb250cmFjdC5weTo0MQogICAgLy8gc2VsZi5wZXJfdXNlcl9mZWUgPSBwZXJfdXNlcl9mZWUKICAgIHB1c2hieXRlcyAicGVyX3VzZXJfZmVlIgogICAgZnJhbWVfZGlnIC0zCiAgICBhcHBfZ2xvYmFsX3B1dAogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6NDIKICAgIC8vIHNlbGYubWF4X21lbWJlcnMgPSBtYXhfbWVtYmVycwogICAgcHVzaGJ5dGVzICJtYXhfbWVtYmVycyIKICAgIGZyYW1lX2RpZyAtMgogICAgYXBwX2dsb2JhbF9wdXQKICAgIHJldHN1YgoKY3JlYXRlX2dyb3VwX2Vsc2VfYm9keUAyOgogICAgLy8gc21hcnRfY29udHJhY3RzL3N1Ym1hdGUvY29udHJhY3QucHk6MzQKICAgIC8vIHNlbGYuZ3JvdXBzID0gc2VsZi5ncm91cHMgKyAiLCIgKyBncm91cF9uYW1lCiAgICBpbnRjXzAgLy8gMAogICAgYnl0ZWNfMCAvLyAiZ3JvdXBzIgogICAgYXBwX2dsb2JhbF9nZXRfZXgKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmdyb3VwcyBleGlzdHMKICAgIHB1c2hieXRlcyAiLCIKICAgIGNvbmNhdAogICAgZnJhbWVfZGlnIC01CiAgICBjb25jYXQKICAgIGJ5dGVjXzAgLy8gImdyb3VwcyIKICAgIHN3YXAKICAgIGFwcF9nbG9iYWxfcHV0CiAgICBiIGNyZWF0ZV9ncm91cF9hZnRlcl9pZl9lbHNlQDMK", "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuY2xlYXJfc3RhdGVfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4K"}, "sourceInfo": {"approval": {"pcOffsetMethod": "none", "sourceInfo": [{"pc": [54, 92], "errorMessage": "OnCompletion is not NoOp"}, {"pc": [132], "errorMessage": "can only call when creating"}, {"pc": [57, 95], "errorMessage": "can only call when not creating"}, {"pc": [179, 301], "errorMessage": "check self.groups exists"}, {"pc": [158], "errorMessage": "group_name must not be empty"}, {"pc": [169], "errorMessage": "max_members must be greater than 0"}, {"pc": [175], "errorMessage": "max_members must be less than or equal to 100"}, {"pc": [166], "errorMessage": "per_user_fee must be greater than 0"}, {"pc": [163], "errorMessage": "subscription must not be empty"}]}, "clear": {"pcOffsetMethod": "none", "sourceInfo": []}}, "templateVariables": {}}"""
 APP_SPEC = algokit_utils.Arc56Contract.from_json(_APP_SPEC_JSON)
 
 def _parse_abi_args(args: object | None = None) -> list[object] | None:
@@ -73,6 +73,19 @@ class HelloArgs:
     def abi_method_signature(self) -> str:
         return "hello(string)string"
 
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class CreateGroupArgs:
+    """Dataclass for create_group arguments"""
+    group_name: str
+    subscription: str
+    per_user_fee: int
+    max_members: int
+    creator: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "create_group(string,string,uint64,uint64,string)void"
+
 
 class SubmateParams:
     def __init__(self, app_client: algokit_utils.AppClient):
@@ -88,6 +101,19 @@ class SubmateParams:
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "hello(string)string",
+            "args": method_args,
+        }))
+
+    def create_group(
+        self,
+        args: tuple[str, str, int, int, str] | CreateGroupArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "create_group(string,string,uint64,uint64,string)void",
             "args": method_args,
         }))
 
@@ -116,6 +142,19 @@ class SubmateCreateTransactionParams:
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "hello(string)string",
+            "args": method_args,
+        }))
+
+    def create_group(
+        self,
+        args: tuple[str, str, int, int, str] | CreateGroupArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "create_group(string,string,uint64,uint64,string)void",
             "args": method_args,
         }))
 
@@ -150,6 +189,22 @@ class SubmateSend:
         parsed_response = response
         return typing.cast(algokit_utils.SendAppTransactionResult[str], parsed_response)
 
+    def create_group(
+        self,
+        args: tuple[str, str, int, int, str] | CreateGroupArgs,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[None]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "create_group(string,string,uint64,uint64,string)void",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[None], parsed_response)
+
     def clear_state(
         self,
         params: algokit_utils.AppClientBareCallParams | None = None,
@@ -161,11 +216,116 @@ class SubmateSend:
         )
 
 
+class GlobalStateValue(typing.TypedDict):
+    """Shape of global_state state key values"""
+    groups: str
+    group_name: str
+    subscription: str
+    creator: str
+    members: str
+    pending_members: str
+    per_user_fee: int
+    max_members: int
+
 class SubmateState:
     """Methods to access state for the current Submate app"""
 
     def __init__(self, app_client: algokit_utils.AppClient):
         self.app_client = app_client
+
+    @property
+    def global_state(
+        self
+    ) -> "_GlobalState":
+            """Methods to access global_state for the current app"""
+            return _GlobalState(self.app_client)
+
+class _GlobalState:
+    def __init__(self, app_client: algokit_utils.AppClient):
+        self.app_client = app_client
+        
+        # Pre-generated mapping of value types to their struct classes
+        self._struct_classes: dict[str, typing.Type[typing.Any]] = {}
+
+    def get_all(self) -> GlobalStateValue:
+        """Get all current keyed values from global_state state"""
+        result = self.app_client.state.global_state.get_all()
+        if not result:
+            return typing.cast(GlobalStateValue, {})
+
+        converted = {}
+        for key, value in result.items():
+            key_info = self.app_client.app_spec.state.keys.global_state.get(key)
+            struct_class = self._struct_classes.get(key_info.value_type) if key_info else None
+            converted[key] = (
+                _init_dataclass(struct_class, value) if struct_class and isinstance(value, dict)
+                else value
+            )
+        return typing.cast(GlobalStateValue, converted)
+
+    @property
+    def groups(self) -> str:
+        """Get the current value of the groups key in global_state state"""
+        value = self.app_client.state.global_state.get_value("groups")
+        if isinstance(value, dict) and "AVMString" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMString"], value)  # type: ignore
+        return typing.cast(str, value)
+
+    @property
+    def group_name(self) -> str:
+        """Get the current value of the group_name key in global_state state"""
+        value = self.app_client.state.global_state.get_value("group_name")
+        if isinstance(value, dict) and "AVMString" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMString"], value)  # type: ignore
+        return typing.cast(str, value)
+
+    @property
+    def subscription(self) -> str:
+        """Get the current value of the subscription key in global_state state"""
+        value = self.app_client.state.global_state.get_value("subscription")
+        if isinstance(value, dict) and "AVMString" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMString"], value)  # type: ignore
+        return typing.cast(str, value)
+
+    @property
+    def creator(self) -> str:
+        """Get the current value of the creator key in global_state state"""
+        value = self.app_client.state.global_state.get_value("creator")
+        if isinstance(value, dict) and "AVMString" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMString"], value)  # type: ignore
+        return typing.cast(str, value)
+
+    @property
+    def members(self) -> str:
+        """Get the current value of the members key in global_state state"""
+        value = self.app_client.state.global_state.get_value("members")
+        if isinstance(value, dict) and "AVMString" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMString"], value)  # type: ignore
+        return typing.cast(str, value)
+
+    @property
+    def pending_members(self) -> str:
+        """Get the current value of the pending_members key in global_state state"""
+        value = self.app_client.state.global_state.get_value("pending_members")
+        if isinstance(value, dict) and "AVMString" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMString"], value)  # type: ignore
+        return typing.cast(str, value)
+
+    @property
+    def per_user_fee(self) -> int:
+        """Get the current value of the per_user_fee key in global_state state"""
+        value = self.app_client.state.global_state.get_value("per_user_fee")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
+        return typing.cast(int, value)
+
+    @property
+    def max_members(self) -> int:
+        """Get the current value of the max_members key in global_state state"""
+        value = self.app_client.state.global_state.get_value("max_members")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
+        return typing.cast(int, value)
 
 class SubmateClient:
     """Client for interacting with Submate smart contract"""
@@ -316,6 +476,12 @@ class SubmateClient:
         method: typing.Literal["hello(string)string"],
         return_value: algokit_utils.ABIReturn | None
     ) -> str | None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
+        method: typing.Literal["create_group(string,string,uint64,uint64,string)void"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> None: ...
     @typing.overload
     def decode_return_value(
         self,
@@ -518,6 +684,26 @@ class SubmateFactoryCreateParams:
             compilation_params=compilation_params
         )
 
+    def create_group(
+        self,
+        args: tuple[str, str, int, int, str] | CreateGroupArgs,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the create_group(string,string,uint64,uint64,string)void ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "create_group(string,string,uint64,uint64,string)void",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
 class SubmateFactoryUpdateParams:
     """Parameters for 'update' operations of Submate contract"""
 
@@ -633,6 +819,24 @@ class SubmateComposer:
         self._result_mappers.append(
             lambda v: self.client.decode_return_value(
                 "hello(string)string", v
+            )
+        )
+        return self
+
+    def create_group(
+        self,
+        args: tuple[str, str, int, int, str] | CreateGroupArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "SubmateComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.create_group(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "create_group(string,string,uint64,uint64,string)void", v
             )
         )
         return self

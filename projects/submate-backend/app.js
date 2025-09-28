@@ -3,6 +3,11 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+const cors = require('cors');
+app.use(cors(
+  {origin: '*'}
+));
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
@@ -30,8 +35,17 @@ app.get('/getresponse', async (req, res) => {
     ],
     max_tokens: 150
 });
+    const raw = completion.choices[0].message.content.trim();
 
-res.json({ response: completion.choices[0].message.content.trim() });
+    let parsed;
+    try {
+      parsed = JSON.parse(raw); // AI JSON array gönderiyorsa parse et
+    } catch {
+      parsed = raw; // fallback olarak string
+    }
+
+    res.json(parsed);
+  // res.json({ response: completion.choices[0].message.content.trim() });
   } catch (error) {
     res.status(500).json({ error: error.message || 'Something went wrong' });
   }

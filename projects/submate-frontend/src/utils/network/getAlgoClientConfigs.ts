@@ -39,3 +39,12 @@ export function getKmdConfigFromViteEnvironment(): AlgoViteKMDConfig {
     password: import.meta.env.VITE_KMD_PASSWORD,
   }
 }
+
+export function getAppId() {
+  if (!import.meta.env.VITE_APP_ID) {
+    throw new Error('Attempt to get app id algod configuration without specifying VITE_APP_ID in the environment variables')
+  }
+  return {
+    appId: BigInt(import.meta.env.VITE_APP_ID),
+  }
+}
