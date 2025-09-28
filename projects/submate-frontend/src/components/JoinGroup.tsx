@@ -117,11 +117,11 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
       if (!response.ok) {
         throw new Error('Failed to fetch group suggestions');
       }
-      const aiResponse: GroupSuggestion[] = await response.json(); // backend direkt array döndürüyorsa bu yeterli
+      const aiResponse: GroupSuggestion[] = await response.json();
 
 
       console.log(aiResponse);
-      console.log(Array.isArray(aiResponse)); // true ise array, false ise tek obje
+      console.log(Array.isArray(aiResponse));
       setSuggestions(aiResponse);
       console.log(suggestions)
       enqueueSnackbar("Suggestions received!", { variant: "success" });
@@ -133,7 +133,6 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
   };
 
   const handleJoinGroup = (group: GroupSuggestion) => {
-    // Burada smart contract call yapılacak
     enqueueSnackbar(`Joined ${group.group_name}!`, { variant: "success" });
     closeModal();
   };
