@@ -96,7 +96,8 @@ const JoinGroup = ({ openModal, closeModal }: JoinGroupInterface) => {
       IMPORTANT ! Return only a valid JSON array — starting with "[" and ending with "]".
       Use only the following keys for each group object:
       "group_name", "subscription", "fee", "max_members", "members", "creator".
-
+      Each key must have a valid value.
+      My maximum token limit is 1000.
       ⚠️ Do not include any extra quotes, explanations, or formatting.
       Only return the pure JSON array like this:
       [
